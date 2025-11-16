@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoSort - Smart Waste Management System</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Your Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="#home" class="logo">
+        <i class="fas fa-recycle"></i> EcoSort
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <button class="btn-login" onclick="showLogin()">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero" id="home">
+    <div class="container hero-container">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <i class="fas fa-leaf"></i> Eco-Friendly & Smart
+        </div>
+
+        <h1>Smart Waste Segregation System</h1>
+        <p>Revolutionizing waste management with AI-powered sorting technology. Track, analyze, and optimize your waste disposal in real-time.</p>
+
+        <div class="hero-buttons">
+          <button class="btn btn-primary" onclick="showLogin()">
+            <i class="fas fa-rocket"></i> Get Started
+          </button>
+          <button class="btn btn-secondary" onclick="scrollToSection('features')">
+            <i class="fas fa-info-circle"></i> Learn More
+          </button>
+        </div>
+
+        <div class="hero-stats">
+          <div><strong>10K+</strong><span>Active Users</span></div>
+          <div><strong>500T+</strong><span>Waste Sorted</span></div>
+          <div><strong>95%</strong><span>Accuracy Rate</span></div>
+        </div>
+      </div>
+
+      <div class="hero-images">
+        <div class="floating-card">
+          <i class="fas fa-leaf"></i>
+          <div>
+            <h4>Eco-Friendly</h4>
+            <p>100% Green</p>
+          </div>
+        </div>
+        <div class="floating-card">
+          <i class="fas fa-chart-line"></i>
+          <div>
+            <h4>Real-time</h4>
+            <p>Live Tracking</p>
+          </div>
+        </div>
+        <div class="floating-card">
+          <i class="fas fa-robot"></i>
+          <div>
+            <h4>AI Powered</h4>
+            <p>Smart Detection</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FEATURES SECTION ==================== -->
+  <section class="features" id="features">
+    <div class="container section-container">
+      <h2 class="section-title">Why Choose EcoSort?</h2>
+      <p class="section-subtitle">Cutting-edge technology meets environmental responsibility</p>
+
+      <div class="features-grid">
+        <article class="feature-card">
+          <i class="fas fa-trash-alt feature-icon green"></i>
+          <h3>Smart Segregation</h3>
+          <p>Automatically categorize waste into biodegradable, recyclable, non-biodegradable using AI sensors.</p>
+        </article>
+
+        <article class="feature-card">
+          <i class="fas fa-chart-pie feature-icon blue"></i>
+          <h3>Real-time Analytics</h3>
+          <p>Track bin fill levels and waste categories live. Monitor KPIs like diversion rate, contamination rate, and bin utilization.</p>
+        </article>
+
+        <article class="feature-card">
+          <i class="fas fa-bell feature-icon orange"></i>
+          <h3>Smart Alerts</h3>
+          <p>Receive notifications about bin overflow, contamination detection, and system health status in real-time.</p>
+        </article>
+
+        <article class="feature-card">
+          <i class="fas fa-mobile-alt feature-icon purple"></i>
+          <h3>Mobile Responsive</h3>
+          <p>Access your waste management dashboard from any device, anywhere, anytime with full mobile support.</p>
+        </article>
+
+        <article class="feature-card">
+          <i class="fas fa-shield-alt feature-icon red"></i>
+          <h3>Secure & Private</h3>
+          <p>Enterprise-grade encryption with secure OTA updates and remote diagnostics to minimize downtime.</p>
+        </article>
+
+        <article class="feature-card">
+          <i class="fas fa-route feature-icon teal"></i>
+          <h3>Route Optimization</h3>
+          <p>Predictive pickup scheduling reduces collection trips by 20% while preventing overflow using fill-level trends.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+<!-- ==================== DASHBOARD PREVIEW SECTION ==================== -->
+<section class="dashboard-preview" id="dashboard">
+  <div class="container section-container">
+    <h2 class="section-title">Live Dashboard Preview</h2>
+    <p class="section-subtitle">Real-time monitoring and analytics at your fingertips</p>
+
+    <div class="dashboard-grid">
+      
+      <!-- Real-time Analytics Card -->
+      <div class="dashboard-card analytics-card">
+        <div class="card-header">
+          <i class="fas fa-chart-pie"></i>
+          <h3>Real-time Analytics</h3>
+        </div>
+        <div class="card-body">
+          <div class="stat-item">
+            <div class="stat-label">
+              <i class="fas fa-recycle"></i> Recyclable
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill recyclable" data-value="65">65%</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">
+              <i class="fas fa-leaf"></i> Biodegradable
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill biodegradable" data-value="45">45%</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">
+              <i class="fas fa-trash"></i> Non-Biodegradable
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill non-bio" data-value="30">30%</div>
+            </div>
+          </div>
+        
+        </div>
+        <div class="card-footer">
+          <span class="live-indicator"><i class="fas fa-circle"></i> Live</span>
+          <span>Updated 2s ago</span>
+        </div>
+      </div>
+
+      <!-- Bin Fill Levels Card -->
+      <div class="dashboard-card bin-levels-card">
+        <div class="card-header">
+          <i class="fas fa-dumpster"></i>
+          <h3>Bin Fill Levels</h3>
+        </div>
+        <div class="card-body">
+          <div class="bin-item">
+            <div class="bin-info">
+              <span class="bin-name">Bin A - Biodegradable</span>
+              <span class="bin-percentage">78%</span>
+            </div>
+            <div class="bin-visual">
+              <div class="bin-fill" style="height: 78%"></div>
+            </div>
+            <span class="bin-status warning">Near Full</span>
+          </div>
+          <div class="bin-item">
+            <div class="bin-info">
+              <span class="bin-name">Bin B - Non Biodegradable</span>
+              <span class="bin-percentage">45%</span>
+            </div>
+            <div class="bin-visual">
+              <div class="bin-fill" style="height: 45%"></div>
+            </div>
+            <span class="bin-status normal">Normal</span>
+          </div>
+          <div class="bin-item">
+            <div class="bin-info">
+              <span class="bin-name">Bin C - Recyclable</span>
+              <span class="bin-percentage">92%</span>
+            </div>
+            <div class="bin-visual">
+              <div class="bin-fill critical" style="height: 92%"></div>
+            </div>
+            <span class="bin-status critical">Critical</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smart Alerts Card -->
+      <div class="dashboard-card alerts-card">
+        <div class="card-header">
+          <i class="fas fa-bell"></i>
+          <h3>Smart Alerts</h3>
+          <span class="alert-badge">3</span>
+        </div>
+        <div class="card-body">
+          <div class="alert-item alert-critical">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="alert-content">
+              <strong>Bin Overflow Warning</strong>
+              <p>Bin C is at 92% capacity</p>
+              <span class="alert-time">2 min ago</span>
+            </div>
+          </div>
+          <div class="alert-item alert-warning">
+            <i class="fas fa-exclamation-circle"></i>
+            <div class="alert-content">
+              <strong>Contamination Detected</strong>
+              <p>Non-recyclable item in Bin A</p>
+              <span class="alert-time">15 min ago</span>
+            </div>
+          </div>
+          <div class="alert-item alert-info">
+            <i class="fas fa-info-circle"></i>
+            <div class="alert-content">
+              <strong>System Health Check</strong>
+              <p>All sensors operational</p>
+              <span class="alert-time">1 hour ago</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-view-all">View All Alerts <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Card -->
+      <div class="dashboard-card kpi-card">
+        <div class="card-header">
+          <i class="fas fa-tachometer-alt"></i>
+          <h3>Key Performance Indicators</h3>
+        </div>
+        <div class="card-body">
+          <div class="kpi-item">
+            <div class="kpi-icon green">
+              <i class="fas fa-arrow-up"></i>
+            </div>
+            <div class="kpi-details">
+              <span class="kpi-label">Diversion Rate</span>
+              <span class="kpi-value">87.5%</span>
+              <span class="kpi-change positive">+5.2%</span>
+            </div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-icon orange">
+              <i class="fas fa-arrow-down"></i>
+            </div>
+            <div class="kpi-details">
+              <span class="kpi-label">Contamination Rate</span>
+              <span class="kpi-value">8.3%</span>
+              <span class="kpi-change negative">-2.1%</span>
+            </div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-icon blue">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="kpi-details">
+              <span class="kpi-label">Bin Utilization</span>
+              <span class="kpi-value">71.8%</span>
+              <span class="kpi-change positive">+3.4%</span>
+            </div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-icon purple">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="kpi-details">
+              <span class="kpi-label">Avg. Collection Time</span>
+              <span class="kpi-value">2.3 hrs</span>
+              <span class="kpi-change positive">-0.5 hrs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Route Optimization Card -->
+      <div class="dashboard-card route-card">
+        <div class="card-header">
+          <i class="fas fa-route"></i>
+          <h3>Route Optimization</h3>
+        </div>
+        <div class="card-body">
+          <div class="route-stats">
+            <div class="route-stat-item">
+              <i class="fas fa-truck"></i>
+              <div>
+                <strong>5</strong>
+                <span>Active Routes</span>
+              </div>
+            </div>
+            <div class="route-stat-item">
+              <i class="fas fa-clock"></i>
+              <div>
+                <strong>20%</strong>
+                <span>Time Saved</span>
+              </div>
+            </div>
+            <div class="route-stat-item">
+              <i class="fas fa-gas-pump"></i>
+              <div>
+                <strong>15%</strong>
+                <span>Fuel Reduced</span>
+              </div>
+            </div>
+          </div>
+          <div class="route-map">
+            <div class="map-placeholder">
+              <i class="fas fa-map-marked-alt"></i>
+              <p>Interactive Route Map</p>
+              <span>Optimized collection paths</span>
+            </div>
+          </div>
+          <div class="next-pickup">
+            <i class="fas fa-calendar-check"></i>
+            <div>
+              <strong>Next Scheduled Pickup</strong>
+              <p>Tomorrow at 8:30 AM - Zone A</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security & System Health Card -->
+      <div class="dashboard-card security-card">
+        <div class="card-header">
+          <i class="fas fa-shield-alt"></i>
+          <h3>Security & System Health</h3>
+        </div>
+        <div class="card-body">
+          <div class="security-item">
+            <i class="fas fa-lock security-icon"></i>
+            <div class="security-details">
+              <strong>Encryption Status</strong>
+              <span class="status-active">Active - AES-256</span>
+            </div>
+          </div>
+          <div class="security-item">
+            <i class="fas fa-sync security-icon"></i>
+            <div class="security-details">
+              <strong>Last OTA Update</strong>
+              <span class="status-normal">2 days ago - v2.4.1</span>
+            </div>
+          </div>
+          <div class="security-item">
+            <i class="fas fa-heartbeat security-icon"></i>
+            <div class="security-details">
+              <strong>System Uptime</strong>
+              <span class="status-excellent">99.8% - 45 days</span>
+            </div>
+          </div>
+          <div class="security-item">
+            <i class="fas fa-wifi security-icon"></i>
+            <div class="security-details">
+              <strong>Network Status</strong>
+              <span class="status-active">Connected - Strong Signal</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-diagnostics">
+            <i class="fas fa-stethoscope"></i> Run Diagnostics
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Dashboard CTA -->
+    <div class="dashboard-cta">
+      <h3>Ready to experience the full dashboard?</h3>
+      <p>Get real-time insights and complete control over your waste management system</p>
+      <button class="btn btn-primary btn-large" onclick="showLogin()">
+        <i class="fas fa-rocket"></i> Access Full Dashboard
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== CONTACT SECTION ==================== -->
+<section class="contact-section" id="contact">
+  <div class="contact-container">
+    <h1>Contact Us</h1>
+    <p>We are here to assist you with any questions or support.</p>
+    <form class="contact-form" action="https://submit-form.com/bBMnX4Eu9" method="POST">
+      <label for="name"><i class="fas fa-user"></i> Name</label>
+      <input type="text" id="name" name="name" placeholder="Name" required />
+
+      <label for="email"><i class="fas fa-envelope"></i> Email</label>
+      <input type="email" id="email" name="email" placeholder="Email" required />
+
+      <label for="message"><i class="fas fa-comment"></i> Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Message" required></textarea>
+
+      <button type="submit" class="btn-send">
+        <i class="fas fa-paper-plane"></i> Send
+      </button>
+    </form>
+  </div>
+</section>
+
+
+  <!-- ==================== ABOUT SECTION ==================== -->
+  <section class="about" id="about">
+    <div class="container section-container">
+      <h2 class="section-title">Our Mission & Objectives</h2>
+      <p class="section-subtitle">Promoting sustainable waste management through innovation and community engagement.</p>
+      
+      <ul class="objectives-list">
+        <li><i class="fas fa-check-circle"></i> Design smart bins that auto-segregate waste and monitor fill levels in real-time.</li>
+        <li><i class="fas fa-check-circle"></i> Develop data analytics for KPIs (diversion rate, contamination, precision/recall) to inform sustainability decisions.</li>
+        <li><i class="fas fa-check-circle"></i> Evaluate system performance through controlled tests focusing on accuracy, efficiency, and reliability.</li>
+        <li><i class="fas fa-check-circle"></i> Promote environmental awareness and encourage active participation by students and staff.</li>
+        <li><i class="fas fa-check-circle"></i> Enable secure over-the-air updates and remote diagnostics for minimal downtime.</li>
+        <li><i class="fas fa-check-circle"></i> Implement predictive pickup scheduling and route optimization to reduce trips by 20%.</li>
+      </ul>
+    </div>
+  </section>
+
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <small>&copy; 2024 EcoSort - All rights reserved. Making the world greener, one waste at a time.</small>
+      <div class="social-links">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </footer>
+
+<!-- ==================== LOGIN MODAL ==================== -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeLogin()">&times;</span>
+    <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="loginEmail" placeholder="Enter your email" required />
+      </div>
+      <div class="form-group">
+        <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password" required />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">
+        <i class="fas fa-sign-in-alt"></i> Sign In
+      </button>
+    </form>
+    <p class="modal-footer">Don't have an account? <a href="#" onclick="alert('Registration coming soon!')">Sign Up</a></p>
+  </div>
+</div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
