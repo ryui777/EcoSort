@@ -86,9 +86,13 @@ function closeLogin() {
 
 // Close modal when clicking outside
 window.addEventListener('click', function(event) {
-    const modal = document.getElementById('loginModal');
-    if (event.target === modal) {
+    const loginModal = document.getElementById('loginModal');
+    const signUpModal = document.getElementById('signUpModal');
+    if (event.target === loginModal) {
         closeLogin();
+    }
+    if (event.target === signUpModal) {
+        closeSignUp();
     }
 });
 
@@ -96,16 +100,17 @@ window.addEventListener('click', function(event) {
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closeLogin();
+        closeSignUp();
     }
 });
 
 /* ==================== LOGIN FORM HANDLER - UPDATED ==================== */
 function handleLogin(event) {
     event.preventDefault();
-    
+
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
-    
+
     // Simple validation
     if (email && password) {
         // Show loading state
@@ -113,21 +118,21 @@ function handleLogin(event) {
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
         submitBtn.disabled = true;
-        
+
         // Simulate API call
         setTimeout(() => {
             // Store user data (in real app, this would come from backend)
             localStorage.setItem('userEmail', email);
             localStorage.setItem('isLoggedIn', 'true');
-            
+
             // Show success notification
             showNotification('Login successful! Welcome back!', 'success');
-            
+
             // Reset form
             event.target.reset();
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
-            
+
             // Close modal and redirect
             setTimeout(() => {
                 closeLogin();
@@ -137,7 +142,85 @@ function handleLogin(event) {
     } else {
         showNotification('Please fill in all fields', 'error');
     }
-    
+
+    return false;
+}
+
+/* ==================== SIGN UP MODAL ==================== */
+function showSignUp() {
+    const modal = document.getElementById('signUpModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeSignUp() {
+    const modal = document.getElementById('signUpModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function showLoginFromSignUp() {
+    closeSignUp();
+    showLogin();
+}
+
+/* ==================== SIGN UP FORM HANDLER ==================== */
+function handleSignUp(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('signUpName').value;
+    const email = document.getElementById('signUpEmail').value;
+    const password = document.getElementById('signUpPassword').value;
+    const confirmPassword = document.getElementById('signUpConfirmPassword').value;
+
+    // Validation
+    if (!name || !email || !password || !confirmPassword) {
+        showNotification('Please fill in all fields', 'error');
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        showNotification('Passwords do not match', 'error');
+        return false;
+    }
+
+    if (password.length < 6) {
+        showNotification('Password must be at least 6 characters long', 'error');
+        return false;
+    }
+
+    // Show loading state
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+    submitBtn.disabled = true;
+
+    // Simulate API call
+    setTimeout(() => {
+        // Store user data (in real app, this would come from backend)
+        localStorage.setItem('userName', name);
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('isLoggedIn', 'true');
+
+        // Show success notification
+        showNotification('Account created successfully! Welcome to EcoSort!', 'success');
+
+        // Reset form
+        event.target.reset();
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+
+        // Close modal and redirect
+        setTimeout(() => {
+            closeSignUp();
+            showNotification('Dashboard feature coming soon!', 'info');
+        }, 1500);
+    }, 2000);
+
     return false;
 }
 
