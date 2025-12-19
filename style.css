@@ -2045,6 +2045,51 @@ body {
   background-color: #c82333;
 }
 
+#log-container {
+  background: rgba(16, 185, 129, 0.1);
+  color: rgba(249, 250, 251, 0.85);
+  border-radius: 12px;
+  border: 1px solid var(--primary-green);
+  padding: 1rem 1.5rem;
+  margin-top: 1.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  text-align: left;
+  font-family: 'Courier New', Courier, monospace;
+  backdrop-filter: blur(5px);
+}
+
+#log-container h3 {
+  color: var(--primary-green-light);
+  font-size: 1.1rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--primary-green);
+  padding-bottom: 0.5rem;
+}
+
+#log-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#log-container li {
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+#log-container li:first-child {
+  padding-top: 0.2rem;
+}
+
+#log-container li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
 .reboot-overlay {
   position: fixed;
   top: 0;

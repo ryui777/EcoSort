@@ -182,6 +182,14 @@ function handleLogin(event) {
         setTimeout(() => {
             localStorage.setItem('userEmail', email);
             localStorage.setItem('isLoggedIn', 'true');
+
+            // Check if the user is an admin and log the event
+            if (email.toLowerCase() === 'admin@ecosort.com') {
+                const message = `Admin user ${email} logged in.`;
+                console.log(`[ADMIN LOGIN] ${message} at ${new Date().toISOString()}`);
+                logToPage(message);
+            }
+
             showNotification('Login successful! Welcome back!', 'success');
             setLoadingState(event.target, false, 'Sign In');
             event.target.reset();
@@ -224,6 +232,17 @@ function setLoadingState(form, isLoading, loadingText) {
             submitBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> ${loadingText}`;
             submitBtn.disabled = false;
         }
+    }
+}
+
+/* ==================== LOGGING ==================== */
+function logToPage(message) {
+    const logList = document.getElementById('log-list');
+    if (logList) {
+        const entry = document.createElement('li');
+        const timestamp = new Date().toLocaleTimeString();
+        entry.textContent = `[${timestamp}] ${message}`;
+        logList.prepend(entry); // Add new logs to the top
     }
 }
 
