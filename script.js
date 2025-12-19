@@ -1,436 +1,37 @@
-/* ==================== GLOBAL VARIABLES ==================== */
-let currentPage = 'landing';
-let wasteData = {
-    biodegradable: 35,
-    nonBiodegradable: 25,
-    recyclable: 40
-};
+/* ==================== APP INITIALIZATION ==================== */
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Core Functionalities
+    initCore();
+    initModal();
+    initDashboardAnimations();
+    initApp();
 
-/* ==================== NAVIGATION MENU TOGGLE ==================== */
-function toggleMenu() {
-    const navLinks = document.getElementById('navLinks');
-    const hamburger = document.getElementById('hamburger');
+    // Attach Event Listeners
+    attachEventListeners();
+});
+
+/* ==================== CORE FUNCTIONALITIES ==================== */
+function initCore() {
+    console.log('%c🌿 Welcome to EcoSort! 🌿', 'color: #10b981; font-size: 20px; font-weight: bold;');
+    console.log('%cSmart Waste Management System', 'color: #34d399; font-size: 14px;');
+    console.log('%cVersion 1.0.0', 'color: #6ee7b7; font-size: 12px;');
+
+    // Initial check for scroll-based animations
+    revealOnScroll();
     
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('active');
-}
-
-// Close menu when clicking outside
-document.addEventListener('click', function(event) {
-    const navLinks = document.getElementById('navLinks');
-    const hamburger = document.getElementById('hamburger');
-    const navbar = document.querySelector('.navbar');
-    
-    if (navLinks && hamburger && navbar) {
-        if (!navbar.contains(event.target)) {
-            navLinks.classList.remove('active');
-            hamburger.classList.remove('active');
-        }
-    }
-});
-
-// Close menu when clicking on a nav link
-document.addEventListener('DOMContentLoaded', function() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            const navLinksContainer = document.getElementById('navLinks');
-            const hamburger = document.getElementById('hamburger');
-            if (navLinksContainer && hamburger) {
-                navLinksContainer.classList.remove('active');
-                hamburger.classList.remove('active');
-            }
-        });
-    });
-});
-
-/* ==================== SMOOTH SCROLLING ==================== */
-function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        section.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-        });
-    }
-}
-
-/* ==================== NAVBAR SCROLL EFFECT ==================== */
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    }
-});
-
-/* ==================== LOGIN MODAL ==================== */
-function showLogin() {
-    const modal = document.getElementById('loginModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function closeLogin() {
-    const modal = document.getElementById('loginModal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-}
-
-// Close modal when clicking outside
-window.addEventListener('click', function(event) {
-    const loginModal = document.getElementById('loginModal');
-    const signUpModal = document.getElementById('signUpModal');
-    if (event.target === loginModal) {
-        closeLogin();
-    }
-    if (event.target === signUpModal) {
-        closeSignUp();
-    }
-});
-
-// Close modal with Escape key
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closeLogin();
-        closeSignUp();
-    }
-});
-
-/* ==================== LOGIN FORM HANDLER - UPDATED ==================== */
-function handleLogin(event) {
-    event.preventDefault();
-
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-
-    // Simple validation
-    if (email && password) {
-        // Show loading state
-        const submitBtn = event.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
-        submitBtn.disabled = true;
-
-        // Simulate API call
-        setTimeout(() => {
-            // Store user data (in real app, this would come from backend)
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('isLoggedIn', 'true');
-
-            // Show success notification
-            showNotification('Login successful! Welcome back!', 'success');
-
-            // Reset form
-            event.target.reset();
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-
-            // Close modal and redirect
+    // Performance Monitoring
+    if ('performance' in window) {
+        window.addEventListener('load', () => {
             setTimeout(() => {
-                closeLogin();
-                showNotification('Dashboard feature coming soon!', 'info');
-            }, 1500);
-        }, 1500);
-    } else {
-        showNotification('Please fill in all fields', 'error');
-    }
-
-    return false;
-}
-
-/* ==================== SIGN UP MODAL ==================== */
-function showSignUp() {
-    const modal = document.getElementById('signUpModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function closeSignUp() {
-    const modal = document.getElementById('signUpModal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-}
-
-function showLoginFromSignUp() {
-    closeSignUp();
-    showLogin();
-}
-
-/* ==================== SIGN UP FORM HANDLER ==================== */
-function handleSignUp(event) {
-    event.preventDefault();
-
-    const name = document.getElementById('signUpName').value;
-    const email = document.getElementById('signUpEmail').value;
-    const password = document.getElementById('signUpPassword').value;
-    const confirmPassword = document.getElementById('signUpConfirmPassword').value;
-
-    // Validation
-    if (!name || !email || !password || !confirmPassword) {
-        showNotification('Please fill in all fields', 'error');
-        return false;
-    }
-
-    if (password !== confirmPassword) {
-        showNotification('Passwords do not match', 'error');
-        return false;
-    }
-
-    if (password.length < 6) {
-        showNotification('Password must be at least 6 characters long', 'error');
-        return false;
-    }
-
-    // Show loading state
-    const submitBtn = event.target.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
-    submitBtn.disabled = true;
-
-    // Simulate API call
-    setTimeout(() => {
-        // Store user data (in real app, this would come from backend)
-        localStorage.setItem('userName', name);
-        localStorage.setItem('userEmail', email);
-        localStorage.setItem('isLoggedIn', 'true');
-
-        // Show success notification
-        showNotification('Account created successfully! Welcome to EcoSort!', 'success');
-
-        // Reset form
-        event.target.reset();
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-
-        // Close modal and redirect
-        setTimeout(() => {
-            closeSignUp();
-            showNotification('Dashboard feature coming soon!', 'info');
-        }, 1500);
-    }, 2000);
-
-    return false;
-}
-
-
-/* ==================== NOTIFICATION SYSTEM ==================== */
-function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotification = document.querySelector('.notification');
-    if (existingNotification) {
-        existingNotification.remove();
-    }
-    
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    
-    const icon = type === 'success' ? 'fa-check-circle' : 
-                 type === 'error' ? 'fa-exclamation-circle' : 
-                 'fa-info-circle';
-    
-    notification.innerHTML = `
-        <i class="fas ${icon}"></i>
-        <span>${message}</span>
-        <button onclick="this.parentElement.remove()" class="notification-close">
-            <i class="fas fa-times"></i>
-        </button>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Animate in
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 5000);
-}
-
-/* ==================== SCROLL ANIMATIONS ==================== */
-function revealOnScroll() {
-    const reveals = document.querySelectorAll('.feature-card, .floating-card');
-    
-    reveals.forEach(element => {
-        const windowHeight = window.innerHeight;
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < windowHeight - elementVisible) {
-            element.classList.add('active');
-        }
-    });
-}
-
-window.addEventListener('scroll', revealOnScroll);
-
-// Initial check on page load
-document.addEventListener('DOMContentLoaded', revealOnScroll);
-
-/* ==================== WASTE DATA SIMULATION (for future dashboard) ==================== */
-function updateWasteData() {
-    // Simulate random waste data changes
-    wasteData.biodegradable = Math.max(20, Math.min(50, wasteData.biodegradable + (Math.random() - 0.5) * 5));
-    wasteData.nonBiodegradable = Math.max(15, Math.min(40, wasteData.nonBiodegradable + (Math.random() - 0.5) * 5));
-    wasteData.recyclable = Math.max(25, Math.min(55, wasteData.recyclable + (Math.random() - 0.5) * 5));
-    
-    // Normalize to 100%
-    const total = wasteData.biodegradable + wasteData.nonBiodegradable + wasteData.recyclable;
-    wasteData.biodegradable = Math.round((wasteData.biodegradable / total) * 100);
-    wasteData.nonBiodegradable = Math.round((wasteData.nonBiodegradable / total) * 100);
-    wasteData.recyclable = 100 - wasteData.biodegradable - wasteData.nonBiodegradable;
-    
-    console.log('Updated Waste Data:', wasteData);
-}
-
-// Update waste data every 5 seconds (for demo purposes)
-setInterval(updateWasteData, 5000);
-
-/* ==================== FORM VALIDATION ==================== */
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-}
-
-/* ==================== LOADING ANIMATION ==================== */
-window.addEventListener('load', function() {
-    document.body.classList.add('loaded');
-});
-
-/* ==================== CONSOLE WELCOME MESSAGE ==================== */
-console.log('%c🌿 Welcome to EcoSort! 🌿', 'color: #10b981; font-size: 20px; font-weight: bold;');
-console.log('%cSmart Waste Management System', 'color: #34d399; font-size: 14px;');
-console.log('%cVersion 1.0.0', 'color: #6ee7b7; font-size: 12px;');
-
-/* ==================== PERFORMANCE MONITORING ==================== */
-if ('performance' in window) {
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            const perfData = window.performance.timing;
-            const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-            console.log(`Page Load Time: ${pageLoadTime}ms`);
-        }, 0);
-    });
-}
-
-/* ==================== SERVICE WORKER (for PWA - optional) ==================== */
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        // Uncomment to enable service worker
-        // navigator.serviceWorker.register('/sw.js')
-        //     .then(reg => console.log('Service Worker registered'))
-        //     .catch(err => console.log('Service Worker registration failed'));
-    });
-}
-
-/* ==================== ANALYTICS TRACKING (placeholder) ==================== */
-function trackEvent(category, action, label) {
-    console.log(`Analytics Event: ${category} - ${action} - ${label}`);
-    // In production, integrate with Google Analytics or similar
-    // gtag('event', action, { 'event_category': category, 'event_label': label });
-}
-
-// Track button clicks
-document.addEventListener('DOMContentLoaded', function() {
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            const buttonText = this.textContent.trim();
-            trackEvent('Button', 'Click', buttonText);
+                const perfData = window.performance.timing;
+                const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+                console.log(`Page Load Time: ${pageLoadTime}ms`);
+            }, 0);
         });
-    });
-});
-
-/* ==================== DARK MODE TOGGLE (optional feature) ==================== */
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDarkMode);
-    showNotification(isDarkMode ? 'Dark mode enabled' : 'Light mode enabled', 'info');
-}
-
-// Load dark mode preference
-document.addEventListener('DOMContentLoaded', function() {
-    const darkMode = localStorage.getItem('darkMode') === 'true';
-    if (darkMode) {
-        document.body.classList.add('dark-mode');
     }
-});
 
-/* ==================== COPY TO CLIPBOARD ==================== */
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(function() {
-        showNotification('Copied to clipboard!', 'success');
-    }, function(err) {
-        showNotification('Failed to copy', 'error');
-    });
-}
-
-/* ==================== PRINT PAGE ==================== */
-function printPage() {
-    window.print();
-}
-
-/* ==================== SHARE FUNCTIONALITY ==================== */
-async function shareContent() {
-    if (navigator.share) {
-        try {
-            await navigator.share({
-                title: 'EcoSort - Smart Waste Management',
-                text: 'Check out this amazing waste management system!',
-                url: window.location.href
-            });
-            showNotification('Shared successfully!', 'success');
-        } catch (err) {
-            console.log('Error sharing:', err);
-        }
-    } else {
-        showNotification('Sharing not supported on this browser', 'error');
-    }
-}
-
-/* ==================== BACK TO TOP BUTTON ==================== */
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-// Show/hide back to top button
-window.addEventListener('scroll', function() {
-    const backToTopBtn = document.getElementById('backToTop');
-    if (backToTopBtn) {
-        if (window.scrollY > 300) {
-            backToTopBtn.style.display = 'flex';
-        } else {
-            backToTopBtn.style.display = 'none';
-        }
-    }
-});
-
-/* ==================== LAZY LOADING IMAGES ==================== */
-document.addEventListener('DOMContentLoaded', function() {
+    // Lazy Loading Images
     const images = document.querySelectorAll('img[data-src]');
-    
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -441,106 +42,269 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
     images.forEach(img => imageObserver.observe(img));
-});
+}
 
-/* ==================== KEYBOARD SHORTCUTS ==================== */
-document.addEventListener('keydown', function(event) {
-    // Ctrl/Cmd + K to open search (if implemented)
-    if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
-        event.preventDefault();
-        showNotification('Search feature coming soon!', 'info');
+/* ==================== EVENT LISTENERS ==================== */
+function attachEventListeners() {
+    // Navigation
+    document.getElementById('hamburger')?.addEventListener('click', toggleMenu);
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+            scrollToSection(link.getAttribute('href').substring(1));
+        });
+    });
+
+    // Modals
+    document.querySelector('.btn-login')?.addEventListener('click', () => showModal('loginModal'));
+    document.querySelector('.close-modal')?.addEventListener('click', () => closeModal('loginModal'));
+    document.querySelector('.btn-primary')?.addEventListener('click', () => showModal('loginModal'));
+    document.querySelector('.btn-secondary')?.addEventListener('click', () => scrollToSection('features'));
+    document.getElementById('loginForm')?.addEventListener('submit', handleLogin);
+    document.getElementById('signUpForm')?.addEventListener('submit', handleSignUp);
+
+    // Global Listeners
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('click', handleWindowClick);
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Dashboard Buttons
+    document.querySelector('.btn-view-all')?.addEventListener('click', () => showNotification('Full alerts dashboard coming soon!', 'info'));
+    document.querySelector('.btn-diagnostics')?.addEventListener('click', () => {
+        showNotification('Running system diagnostics...', 'info');
+        setTimeout(() => showNotification('All systems operational!', 'success'), 2000);
+    });
+
+    // Back to Top
+    document.getElementById('backToTop')?.addEventListener('click', scrollToTop);
+
+    // Reboot Demo Button
+    document.getElementById('reboot-btn')?.addEventListener('click', () => {
+        const overlay = document.createElement('div');
+        overlay.className = 'reboot-overlay';
+        overlay.textContent = 'Rebooting...';
+        document.body.appendChild(overlay);
+
+        setTimeout(() => {
+            overlay.remove();
+        }, 5000);
+    });
+}
+
+/* ==================== NAVIGATION ==================== */
+function toggleMenu() {
+    document.getElementById('navLinks')?.classList.toggle('active');
+    document.getElementById('hamburger')?.classList.toggle('active');
+}
+
+function closeMenu() {
+    document.getElementById('navLinks')?.classList.remove('active');
+    document.getElementById('hamburger')?.classList.remove('active');
+}
+
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    
-    // Ctrl/Cmd + L to open login
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ==================== MODAL HANDLING ==================== */
+let activeModal = null;
+
+function initModal() {
+    // Pre-fetch modal elements
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        const modalId = modal.id;
+        document.querySelector(`.close-modal[onclick="closeModal('${modalId}')"]`)?.addEventListener('click', () => closeModal(modalId));
+        document.querySelector(`.modal-footer a[onclick^="showModal"]`)?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetModal = e.target.getAttribute('onclick').match(/'([^']+)'/)[1];
+            switchModal(modalId, targetModal);
+        });
+    });
+}
+
+function showModal(modalId) {
+    closeModal(); // Close any active modal first
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        activeModal = modal;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId = null) {
+    const modalToClose = modalId ? document.getElementById(modalId) : activeModal;
+    if (modalToClose) {
+        modalToClose.style.display = 'none';
+        activeModal = null;
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function switchModal(fromModalId, toModalId) {
+    closeModal(fromModalId);
+    showModal(toModalId);
+}
+
+function handleWindowClick(event) {
+    if (activeModal && event.target === activeModal) {
+        closeModal();
+    }
+}
+
+function handleKeyDown(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
     if ((event.ctrlKey || event.metaKey) && event.key === 'l') {
         event.preventDefault();
-        showLogin();
+        showModal('loginModal');
     }
-});
+}
 
-/* ==================== INITIALIZE APP ==================== */
-function initApp() {
-    console.log('EcoSort App Initialized');
-    
-    // Check if user is logged in
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (isLoggedIn) {
-        const userEmail = localStorage.getItem('userEmail');
-        console.log(`Welcome back, ${userEmail}!`);
+/* ==================== FORM HANDLERS ==================== */
+function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (email && password) {
+        setLoadingState(event.target, true, 'Signing in...');
+        setTimeout(() => {
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('isLoggedIn', 'true');
+            showNotification('Login successful! Welcome back!', 'success');
+            setLoadingState(event.target, false, 'Sign In');
+            event.target.reset();
+            setTimeout(() => {
+                closeModal('loginModal');
+                showNotification('Dashboard feature coming soon!', 'info');
+            }, 1500);
+        }, 1500);
+    } else {
+        showNotification('Please fill in all fields', 'error');
+    }
+}
+
+function handleSignUp(event) {
+    event.preventDefault();
+    const password = document.getElementById('signUpPassword').value;
+    const confirmPassword = document.getElementById('signUpConfirmPassword').value;
+
+    if (password !== confirmPassword) {
+        showNotification('Passwords do not match', 'error');
+        return;
     }
     
-    // Initialize any other features
+    setLoadingState(event.target, true, 'Creating account...');
+    setTimeout(() => {
+        showNotification('Account created successfully!', 'success');
+        setLoadingState(event.target, false, 'Create Account');
+        event.target.reset();
+        setTimeout(() => switchModal('signUpModal', 'loginModal'), 1500);
+    }, 2000);
+}
+
+function setLoadingState(form, isLoading, loadingText) {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        if (isLoading) {
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText}`;
+            submitBtn.disabled = true;
+        } else {
+            submitBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> ${loadingText}`;
+            submitBtn.disabled = false;
+        }
+    }
+}
+
+/* ==================== UI & ANIMATIONS ==================== */
+function handleScroll() {
+    // Navbar style on scroll
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.scrollY > 50 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled');
+    }
+
+    // "Back to Top" button visibility
+    const backToTopBtn = document.getElementById('backToTop');
+    if (backToTopBtn) {
+        backToTopBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    }
+
+    // Reveal elements on scroll
     revealOnScroll();
 }
 
-// Run initialization when DOM is ready
-document.addEventListener('DOMContentLoaded', initApp);
+function revealOnScroll() {
+    const reveals = document.querySelectorAll('.feature-card, .floating-card');
+    reveals.forEach(element => {
+        if (element.getBoundingClientRect().top < window.innerHeight - 150) {
+            element.classList.add('active');
+        }
+    });
+}
+
+function showNotification(message, type = 'info') {
+    document.querySelector('.notification')?.remove();
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    const icon = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' }[type];
+    notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+        <button onclick="this.parentElement.remove()" class="notification-close"><i class="fas fa-times"></i></button>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.classList.add('show'), 100);
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 5000);
+}
 
 /* ==================== DASHBOARD ANIMATIONS ==================== */
-document.addEventListener('DOMContentLoaded', function() {
-  // Animate progress bars when in view
-  const progressBars = document.querySelectorAll('.progress-fill');
-  
-  const animateProgressBars = () => {
-    progressBars.forEach(bar => {
-      const rect = bar.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        const value = bar.getAttribute('data-value');
-        bar.style.width = value + '%';
-      }
-    });
-  };
+function initDashboardAnimations() {
+    const progressBars = document.querySelectorAll('.progress-fill');
+    const binFills = document.querySelectorAll('.bin-fill');
 
-  // Animate bin fills
-  const binFills = document.querySelectorAll('.bin-fill');
-  
-  const animateBinFills = () => {
-    binFills.forEach(fill => {
-      const rect = fill.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        const height = fill.style.height;
-        fill.style.height = '0%';
-        setTimeout(() => {
-          fill.style.height = height;
-        }, 100);
-      }
-    });
-  };
+    const animateElements = () => {
+        progressBars.forEach(bar => {
+            if (bar.getBoundingClientRect().top < window.innerHeight) {
+                bar.style.width = bar.getAttribute('data-value') + '%';
+            }
+        });
+        binFills.forEach(fill => {
+            if (fill.getBoundingClientRect().top < window.innerHeight) {
+                fill.style.height = fill.getAttribute('data-height') + '%';
+            }
+        });
+    };
+    
+    window.addEventListener('scroll', animateElements);
+    setTimeout(animateElements, 500); // Initial animation
 
-  // Run animations on scroll
-  window.addEventListener('scroll', () => {
-    animateProgressBars();
-    animateBinFills();
-  });
+    setInterval(() => {
+        document.querySelectorAll('.live-indicator + span').forEach(indicator => {
+            indicator.textContent = `Updated ${Math.floor(Math.random() * 10) + 1}s ago`;
+        });
+    }, 5000);
+}
 
-  // Run animations on page load
-  setTimeout(() => {
-    animateProgressBars();
-    animateBinFills();
-  }, 500);
-
-  // Simulate real-time updates (for demo)
-  setInterval(() => {
-    const liveIndicators = document.querySelectorAll('.live-indicator + span');
-    liveIndicators.forEach(indicator => {
-      const seconds = Math.floor(Math.random() * 10) + 1;
-      indicator.textContent = `Updated ${seconds}s ago`;
-    });
-  }, 5000);
-});
-
-// Button click handlers
-document.addEventListener('click', function(e) {
-  if (e.target.closest('.btn-view-all')) {
-    showNotification('Full alerts dashboard coming soon!', 'info');
-  }
-  
-  if (e.target.closest('.btn-diagnostics')) {
-    showNotification('Running system diagnostics...', 'info');
-    setTimeout(() => {
-      showNotification('All systems operational!', 'success');
-    }, 2000);
-  }
-});
+/* ==================== APP-SPECIFIC LOGIC ==================== */
+function initApp() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (isLoggedIn) {
+        console.log(`Welcome back, ${localStorage.getItem('userEmail')}!`);
+    }
+    // Any other app-specific initializations can go here
+}
